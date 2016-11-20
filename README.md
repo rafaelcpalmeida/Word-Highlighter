@@ -1,6 +1,6 @@
 # Word Highlighter
 
-This is a small Google Chrome extension that allows you to generate strong and secure passwords using the well known Diceware algorithm.
+This is a small Google Chrome extension that [COMPLETE HERE]
 
 # Instructions
 [INSERT THEM HERE]
