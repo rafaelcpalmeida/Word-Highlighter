@@ -8,6 +8,9 @@ This is a small Google Chrome extension that [COMPLETE HERE]
 # FAQS
 - To be filled
 
+# Thanks to
+- [Freepik] for the beautiful icon
+
 # License
 
 MIT
@@ -21,5 +24,5 @@ MIT
 
    [Raoul Harel]: <https://github.com/rharel/node-avl-tree/>
    [list]: <http://world.std.com/~reinhold/diceware.wordlist.asc>
-   [Freepik]: <http://www.flaticon.com/authors/freepik>
+   [Freepik]: <http://www.freepik.com/free-photos-vectors/school>
    [Arnold Reinhold]: <http://world.std.com/~reinhold/diceware.html>

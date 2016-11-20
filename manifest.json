@@ -1,0 +1,18 @@
+{
+  "manifest_version": 2,
+  "name": "Word Highlighter",
+  "description": "This extension allows you to add our custom words to a list and have them, automatically, highlighted as you browse the Web",
+  "version": "1.0.0",
+  "icons": {
+    "16": "images/icon16.png",
+    "48": "images/icon48.png",
+    "128": "images/icon128.png"
+  },
+  "browser_action": {
+    "default_icon": "images/icon.png",
+    "default_popup": "popup.html"
+  },
+  "permissions": [
+    "storage"
+  ]
+}
