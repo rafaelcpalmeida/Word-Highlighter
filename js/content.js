@@ -2,17 +2,17 @@ var hwReplacements;
 var hwBannedTags = ["STYLE", "SCRIPT", "NOSCRIPT", "TEXTAREA"];
 
 function applyReplacementRule(node) {
-	// Ignore any node whose tag is banned
-	if( !node || $.inArray( node.tagName, hwBannedTags ) !== -1 ) { return; }
+    // Ignore any node whose tag is banned
+    if (!node || $.inArray(node.tagName, hwBannedTags) !== -1) { return; }
 
-	try {
-		$(node).contents().each(function(i, v) {
-			// Ignore any child node that has been replaced already or doesn't contain text
-			if( v.isReplaced || v.nodeType !== Node.TEXT_NODE ) { return; }
+    try {
+        $(node).contents().each(function (i, v) {
+            // Ignore any child node that has been replaced already or doesn't contain text
+            if (v.isReplaced || v.nodeType !== Node.TEXT_NODE) { return; }
 
-			// Apply each replacement in order
-            hwReplacements.then(function(replacements) {
-                replacements.palavras.forEach( function(replacement) {
+            // Apply each replacement in order
+            hwReplacements.then(function (replacements) {
+                replacements.palavras.forEach(function (replacement) {
                     //if( !replacement.active ) return;
                     var matchedText = v.textContent.match(new RegExp(replacement, "i"));
 
@@ -23,20 +23,18 @@ function applyReplacementRule(node) {
 
                         node.innerHTML = replacedText;
                     }
-                })
-            }).catch(
-            // Log the rejection reason
-            function(reason) {
-                console.log('Handle rejected promise ('+reason+') here.');
-            });;
+                });
+            }).catch(function (reason) {
+                console.log("Handle rejected promise (" + reason + ") here.");
+            });
 
-			v.isReplaced = true;
-		});
-	} catch( err ) {
-		// Basically this means that an iframe had a cross-domain source
-		if( err.name !== "SecurityError" )
-		{ throw err; }
-	}
+            v.isReplaced = true;
+        });
+    } catch (err) {
+        // Basically this means that an iframe had a cross-domain source
+        if (err.name !== "SecurityError")
+        { throw err; }
+    }
 }
 
 chrome.storage.local.clear();
@@ -45,10 +43,10 @@ var words = ["teste", "velocidade"];
 
 chrome.storage.local.set({ "words": words }, function () { });
 
-hwReplacements = new Promise(function(resolve, reject) {
+hwReplacements = new Promise(function (resolve, reject) {
     chrome.storage.local.get("words", function (items) {
         resolve(items);
     });
 });
 
-$("body *").map(function(i, v) { applyReplacementRule(v); } );
+$("body *").map(function (i, v) { applyReplacementRule(v); });
