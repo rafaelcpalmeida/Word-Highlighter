@@ -1,17 +1,15 @@
-$('body *').map(function(i, v) { applyReplacements(v); } );
-
 function applyReplacements(node) {
     var gReplacements = ["teste", "velocidade", "não habilitados"];
     var gBannedTags = ["STYLE", "SCRIPT", "NOSCRIPT", "TEXTAREA"];
 
 	// Ignore any node whose tag is banned
-	if( !node || $.inArray( node.tagName, gBannedTags ) !== -1 ) return;
+	if( !node || $.inArray( node.tagName, gBannedTags ) !== -1 ) { return };
 
 	try 
 	{
 		$(node).contents().each(function(i, v) {
 			// Ignore any child node that has been replaced already or doesn't contain text
-			if( v.isReplaced || v.nodeType !== Node.TEXT_NODE ) return;
+			if( v.isReplaced || v.nodeType !== Node.TEXT_NODE ) { return };
 
 			// Apply each replacement in order
 			gReplacements.forEach( function(replacement) {
@@ -31,7 +29,9 @@ function applyReplacements(node) {
 		});
 	} catch( err ) {
 		// Basically this means that an iframe had a cross-domain source, and WR can't do much about it.
-		if( err.name === "SecurityError" ); 
-		else throw err;
+		if( err.name === "SecurityError" ) {} 
+		else {throw err};
 	}
 }
+
+$("body *").map(function(i, v) { applyReplacements(v); } );
