@@ -1,9 +1,9 @@
-function applyReplacements(node) {
-    var gReplacements = ["teste", "velocidade", "não habilitados"];
-    var gBannedTags = ["STYLE", "SCRIPT", "NOSCRIPT", "TEXTAREA"];
+function applyReplacementRule(node) {
+    var hwReplacements = ["teste", "velocidade", "não habilitados", "de"];
+    var hwBannedTags = ["STYLE", "SCRIPT", "NOSCRIPT", "TEXTAREA"];
 
 	// Ignore any node whose tag is banned
-	if( !node || $.inArray( node.tagName, gBannedTags ) !== -1 ) { return; }
+	if( !node || $.inArray( node.tagName, hwBannedTags ) !== -1 ) { return; }
 
 	try 
 	{
@@ -12,7 +12,7 @@ function applyReplacements(node) {
 			if( v.isReplaced || v.nodeType !== Node.TEXT_NODE ) { return; }
 
 			// Apply each replacement in order
-			gReplacements.forEach( function(replacement) {
+			hwReplacements.forEach( function(replacement) {
 				//if( !replacement.active ) return;
                 var matchedText = v.textContent.match(new RegExp(replacement, "i"));
 
@@ -28,10 +28,10 @@ function applyReplacements(node) {
 			v.isReplaced = true;
 		});
 	} catch( err ) {
-		// Basically this means that an iframe had a cross-domain source, and WR can't do much about it.
+		// Basically this means that an iframe had a cross-domain source
 		if( err.name !== "SecurityError" )
 		{ throw err; }
 	}
 }
 
-$("body *").map(function(i, v) { applyReplacements(v); } );
+$("body *").map(function(i, v) { applyReplacementRule(v); } );
