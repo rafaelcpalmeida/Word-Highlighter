@@ -16,7 +16,7 @@ function applyReplacements(node) {
 			// Apply each replacement in order
 			g_replacements.forEach( function(replacement) {
 				//if( !replacement.active ) return;
-                var matchedText = v.textContent.match(/teste/i);
+                var matchedText = v.textContent.match(new RegExp(replacement, "i"));
 
                 if (matchedText) {
                     var replacedText = node.innerHTML.replace(/(teste)/i, "<span class='toHighlight' style=\"background-color: yellow\">$1</span>");
