@@ -42,7 +42,7 @@ function storeWords (wordList) {
 }
 
 function getWordList() {
-    words = [];
+    var words = [];
 
     $(".wordList li").each(function (index, element) {
         words.push(element.textContent.trim());
@@ -66,13 +66,13 @@ hwReplacements = new Promise(function (resolve, reject) {
 $(function() {
     $("body *").map(function (i, v) { applyReplacementRule(v); });
     
-    $(document).on('click', '.fa-trash', function () {
+    $(document).on("click", ".fa-trash", function () {
         $(this).parent().remove();
 
         storeWords(getWordList());
     });
 
-    $(document).on('click', '.fa-plus-circle', function () {
+    $(document).on("click", ".fa-plus-circle", function () {
         var newWord = "array";
 
         $(".wordList").append(`<li>${newWord} <i class="fa fa-trash right" aria-hidden="true"></i></li>`);
