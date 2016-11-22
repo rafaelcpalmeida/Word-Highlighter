@@ -1,0 +1,49 @@
+html {
+    width: 350px;
+    height: 400px;
+}
+
+h1 {
+    text-align: center;
+}
+
+input {
+    width: 80%;
+}
+
+#formHolder {
+    width: 95%;
+    height: 100%;
+    margin: 10px;
+    font-size: 15px;
+}
+
+.highlight {
+    background-color: #ffff00;
+}
+
+.right {
+    float: right;
+}
+
+.clear {
+    clear: both;
+}
+
+.fa-plus-circle {
+    margin-top: -35px;
+    margin-right: 10px;
+}
+
+.wordList {
+    list-style: none;
+    margin-left: -30px;
+}
+
+.wordList li {
+    margin: 0 0 5px 0;
+}
+
+.fa-trash {
+    margin-right: 10px;
+}

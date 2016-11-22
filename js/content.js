@@ -12,7 +12,7 @@ function applyReplacementRule(node) {
 
             // Apply each replacement in order
             hwReplacements.then(function (replacements) {
-                replacements.palavras.forEach(function (replacement) {
+                replacements.words.forEach(function (replacement) {
                     //if( !replacement.active ) return;
                     var matchedText = v.textContent.match(new RegExp(replacement, "i"));
 
@@ -37,11 +37,25 @@ function applyReplacementRule(node) {
     }
 }
 
-chrome.storage.local.clear();
+function storeWords (wordList) {
+    chrome.storage.local.set({ "words": wordList }, function () { });
+}
 
-var words = ["teste", "velocidade"];
+function getWordList() {
+    words = [];
 
-chrome.storage.local.set({ "words": words }, function () { });
+    $(".wordList li").each(function (index, element) {
+        words.push(element.textContent.trim());
+    });
+
+    return words;
+}
+
+/*chrome.storage.local.clear();
+
+var words = ["teste", "velocidade", "ola", "mundo"];
+
+chrome.storage.local.set({ "words": words }, function () { });*/
 
 hwReplacements = new Promise(function (resolve, reject) {
     chrome.storage.local.get("words", function (items) {
@@ -49,4 +63,28 @@ hwReplacements = new Promise(function (resolve, reject) {
     });
 });
 
-$("body *").map(function (i, v) { applyReplacementRule(v); });
+$(function() {
+    $("body *").map(function (i, v) { applyReplacementRule(v); });
+    
+    $(document).on('click', '.fa-trash', function () {
+        $(this).parent().remove();
+
+        storeWords(getWordList());
+    });
+
+    $(document).on('click', '.fa-plus-circle', function () {
+        var newWord = "array";
+
+        $(".wordList").append(`<li>${newWord} <i class="fa fa-trash right" aria-hidden="true"></i></li>`);
+
+        storeWords(getWordList());
+    });
+
+    hwReplacements.then(function (replacements) {
+        replacements.words.forEach(function (replacement, index) {
+            $(".wordList").append(`<li>${replacement} <i class="fa fa-trash right" aria-hidden="true"></i></li>`);
+        });
+    }).catch(function (reason) {
+        console.log("Handle rejected promise (" + reason + ") here.");
+    });
+});
