@@ -19,7 +19,7 @@ function applyReplacementRule(node) {
                     if (matchedText) {
                         // Use `` instead of '' or "" if you want to use ${variable} inside a string
                         // For more information visit https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Template_literals
-                        var replacedText = node.innerHTML.replace(new RegExp(`(${replacement})`, "i"), "<span class='toHighlight' style=\"background-color: yellow\">$1</span>");
+                        var replacedText = node.innerHTML.replace(new RegExp(`(${replacement})`, "i"), "<span style=\"background-color: #ffff00\">$1</span>");
 
                         node.innerHTML = replacedText;
                     }
@@ -37,7 +37,7 @@ function applyReplacementRule(node) {
     }
 }
 
-function storeWords (wordList) {
+function storeWords(wordList) {
     chrome.storage.local.set({ "words": wordList }, function () { });
 }
 
@@ -51,11 +51,15 @@ function getWordList() {
     return words;
 }
 
-/*chrome.storage.local.clear();
-
-var words = ["teste", "velocidade", "ola", "mundo"];
-
-chrome.storage.local.set({ "words": words }, function () { });*/
+chrome.extension.onMessage.addListener(function (message, sender, callback) {
+    if (message.wordToHighlight) {
+        console.log(message.wordToHighlight);
+        hwReplacements.then(function (wordList) {
+            wordList.words.push(message.wordToHighlight);
+            storeWords(wordList.words);
+        });
+    }
+});
 
 hwReplacements = new Promise(function (resolve, reject) {
     chrome.storage.local.get("words", function (items) {
@@ -63,9 +67,9 @@ hwReplacements = new Promise(function (resolve, reject) {
     });
 });
 
-$(function() {
+$(function () {
     $("body *").map(function (i, v) { applyReplacementRule(v); });
-    
+
     $(document).on("click", ".fa-trash", function () {
         $(this).parent().remove();
 

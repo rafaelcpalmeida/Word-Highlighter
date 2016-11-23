@@ -13,16 +13,24 @@
     "default_popup": "html/popup.html"
   },
   "permissions": [
-    "storage"
+    "storage",
+    "contextMenus"
   ],
-  "content_scripts": [{
+  "background": {
+    "scripts": [
+      "js/background.js"
+    ]
+  },
+  "content_scripts": [
+    {
       "matches": [
-            "http://*/*",
-            "https://*/*"
+        "http://*/*",
+        "https://*/*"
       ],
       "js": [
-          "js/jquery.js",
-          "js/content.js"
+        "js/jquery.js",
+        "js/content.js"
       ]
-  }]
+    }
+  ]
 }
