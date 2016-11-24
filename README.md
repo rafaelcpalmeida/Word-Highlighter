@@ -26,6 +26,7 @@ This is a small Google Chrome extension that allows you to add words or expressi
 
 # Known BUGs
 - Google - the extension works the first time you visit google.com but if you change your search term or switch pages it no longer works. 
+- Extension popup - once you open the popup you have to click anywhere on the window to fill the color you previously selected on the color picker.
 
 # Thanks to
 - [Freepik] for the beautiful icon
