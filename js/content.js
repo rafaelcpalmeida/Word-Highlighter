@@ -12,21 +12,23 @@ function applyReplacementRule(node) {
 
             // Apply each replacement in order
             hwReplacements.then(function (replacements) {
-                replacements.words.forEach(function (replacement) {
-                    //if( !replacement.active ) return;
-                    var matchedText = v.textContent.match(new RegExp(replacement, "i"));
+                if(replacements.words) {
+                    replacements.words.forEach(function (replacement) {
+                        //if( !replacement.active ) return;
+                        var matchedText = v.textContent.match(new RegExp(replacement, "i"));
 
-                    if (matchedText) {
-                        // Use `` instead of '' or "" if you want to use ${variable} inside a string
-                        // For more information visit https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Template_literals
-                        highlightColor.then(function (item) {
-                            var color = (item.color.startsWith("#")) ? item.color : "#" + item.color ;
-                            var replacedText = node.innerHTML.replace(new RegExp(`(${replacement})`, "i"), `<span style="background-color: ${color}">$1</span>`);
+                        if (matchedText) {
+                            // Use `` instead of '' or "" if you want to use ${variable} inside a string
+                            // For more information visit https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Template_literals
+                            highlightColor.then(function (item) {
+                                var color = (item.color.startsWith("#")) ? item.color : "#" + item.color ;
+                                var replacedText = node.innerHTML.replace(new RegExp(`(${replacement})`, "i"), `<span style="background-color: ${color}">$1</span>`);
 
-                            node.innerHTML = replacedText;
-                        });
-                    }
-                });
+                                node.innerHTML = replacedText;
+                            });
+                        }
+                    });
+                }
             }).catch(function (reason) {
                 console.log("Handle rejected promise (" + reason + ") here.");
             });
@@ -43,6 +45,7 @@ function applyReplacementRule(node) {
 function storeWords(wordList) {
     chrome.storage.local.set({ "words": wordList }, function () { });
 }
+
 function storeColor(hexCode) {
     chrome.storage.local.set({ "color": hexCode }, function () { });
 }
@@ -72,39 +75,40 @@ function getWordList() {
 chrome.extension.onMessage.addListener(function (message, sender, callback) {
     if (message.wordToHighlight) {
         hwReplacements.then(function (wordList) {
-            wordList.words.push(message.wordToHighlight);
-            storeWords(wordList.words);
+            if(wordList.words) {
+                wordList.words.push(message.wordToHighlight);
+                storeWords(wordList.words);
+            } else {
+                var words = [message.wordToHighlight];
+                storeWords(words);
+            }
         });
     }
 });
 
-$(function () {
+$(function() {
     $("body *").map(function (i, v) { applyReplacementRule(v); });
 
     hwReplacements.then(function (replacements) {
-        replacements.words.forEach(function (replacement, index) {
-            $(".wordList").append(`<li>${replacement} <i class="fa fa-trash right" aria-hidden="true"></i></li>`);
-        });
+        if(replacements.words) {
+            replacements.words.forEach(function (replacement, index) {
+                $(".wordList").append(`<li>${replacement} <i class="fa fa-trash right" aria-hidden="true"></i></li>`);
+            });
+        }
     }).catch(function (reason) {
         console.log("Handle rejected promise (" + reason + ") here.");
     });
 
     highlightColor.then(function (item) {
-        $(".jscolor").val(item.color);
-        var color = (item.color.startsWith("#")) ? item.color : "#" + item.color ;
-        $(".highlight").css("background-color", color);
+        if(item.color) {
+            $(".jscolor").val(item.color);
+            var color = (item.color.startsWith("#")) ? item.color : "#" + item.color ;
+            $(".highlight").css("background-color", color);
+        }
     });
 
     $(document).on("click", ".fa-trash", function () {
         $(this).parent().remove();
-
-        storeWords(getWordList());
-    });
-
-    $(document).on("click", ".fa-plus-circle", function () {
-        var newWord = "array";
-
-        $(".wordList").append(`<li>${newWord} <i class="fa fa-trash right" aria-hidden="true"></i></li>`);
 
         storeWords(getWordList());
     });
