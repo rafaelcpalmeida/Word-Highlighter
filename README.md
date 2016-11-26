@@ -7,7 +7,6 @@ This is a small Google Chrome extension that allows you to add words or expressi
 # Instructions
 - Install the extension
 - Highlight the word or expression that you want to add
-- Refresh the page
 
 ##### If you want to remove the word or expession:
 - Click the icon
