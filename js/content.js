@@ -43,7 +43,13 @@ function applyReplacementRule(node) {
 }
 
 function storeWords(wordList) {
-    chrome.storage.local.set({ "words": wordList }, function () { });
+    chrome.storage.local.set({ "words": wordList }, function () {
+        autoReload.then(function (value) {
+            if(value.autoReload) {
+                window.location.reload();
+            }
+        });
+    });
 }
 
 function storeColor(hexCode) {
@@ -59,6 +65,12 @@ hwReplacements = new Promise(function (resolve, reject) {
 highlightColor = new Promise(function (resolve, reject) {
     chrome.storage.local.get("color", function (item) {
         resolve(item);
+    });
+});
+
+autoReload = new Promise(function (resolve, reject) {
+    chrome.storage.local.get("autoReload", function (items) {
+        resolve(items);
     });
 });
 
@@ -107,6 +119,14 @@ $(function() {
         }
     });
 
+    autoReload.then(function (value) {
+        if(value.autoReload) {
+            $("#autoReloadCheck").prop("checked", true);
+        } else {
+            $("#autoReloadCheck").prop("checked", false);
+        }
+    });
+
     $(document).on("click", ".fa-trash", function () {
         $(this).parent().remove();
 
@@ -115,5 +135,16 @@ $(function() {
 
     $(".jscolor").change(function (e) {
         storeColor($(".jscolor").val());
+    });
+
+    $("#autoReloadCheck").change(function (e) {
+        var checked;
+        if($(this).is(":checked")) {
+            checked = true;
+        } else {
+            checked = false;
+        }
+
+        chrome.storage.local.set({ "autoReload": checked }, function () { });
     });
 });
