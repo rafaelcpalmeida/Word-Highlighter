@@ -1,4 +1,4 @@
-var hwReplacements;
+var hwReplacements, highlightColor, autoReload;
 var hwBannedTags = ["STYLE", "SCRIPT", "NOSCRIPT", "TEXTAREA"];
 
 function applyReplacementRule(node) {
